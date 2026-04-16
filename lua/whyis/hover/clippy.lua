@@ -5,7 +5,8 @@ local async = require("hover.async")
 ---@param opts? Hover.Options
 ---@return boolean
 local function enabled(bufnr, opts)
-	return clippy.enabled(bufnr, opts)
+	local lnum = vim.api.nvim_win_get_cursor(0)[1]
+	return clippy.enabled(bufnr, lnum)
 end
 
 ---@param params Hover.Provider.Params
