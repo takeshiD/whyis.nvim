@@ -15,17 +15,21 @@ local function execute(params, done)
 		local bufnr = params.bufnr
 		local lnum = params.pos[1]
 		local explain = clippy.execute(bufnr, lnum)
-		local lines = {}
-		for _, line in ipairs(vim.split(explain, "\n")) do
-			lines[#lines + 1] = line
+		if explain ~= nil then
+			local lines = {}
+			for _, line in ipairs(vim.split(explain, "\n")) do
+				lines[#lines + 1] = line
+			end
+			done({ lines = lines, filetype = "markdown" })
+		else
+			done({ lines = {}, filetype = "markdown" })
 		end
-		done({ lines = lines, filetype = "markdown" })
 	end)
 end
 
 ---@return Hover.Provider
 return {
-	name = "whyis-clippy",
+	name = "Whyis",
 	priority = 1000,
 	enabled = enabled,
 	execute = execute,

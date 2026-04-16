@@ -23,31 +23,36 @@ local function clippy_explain(lint_code, opts)
 	}):wait(opts.timeout)
 	if result.code ~= 0 then
 		local err = result.stderr ~= "" and result.stderr
-			or string.format("cargo clippy --explain failed with exit code %d")
+			or string.format("[whyis:ERROR] cargo clippy --explain failed with exit code %d", result.code)
 		return nil, err
 	end
-	return result.stderr, nil
+	return result.stdout, nil
 end
 
 ---@param vim.Diagnotic
 ---@return string? lint_code
 local function extract_lintcode(diagnotic)
-	return diagnotic.code
+	return diagnotic.user_data.lsp.code
 end
 
 ---@param bufnr number
 ---@param lnum number
 ---@return string? explain
 local function execute(bufnr, lnum)
-	local diagnotics = vim.diagnostic.get(bufnr, { lnum = lnum })
+	local diagnotics = vim.diagnostic.get(bufnr, { lnum = lnum - 1 })
 	for _, diag in ipairs(diagnotics) do
-		local lint_code = extract_lintcode(diag)
-		local explain, err = clippy_explain(lint_code)
-		if err ~= nil then
-			vim.notify(err)
+		if diag.source == "clippy" then
+			local lint_code = extract_lintcode(diag)
+			if lint_code ~= nil then
+				local explain, err = clippy_explain(lint_code)
+				if err ~= nil then
+					vim.notify(err)
+				end
+				return explain
+			end
 		end
-		return explain
 	end
+	return nil
 end
 
 return {
