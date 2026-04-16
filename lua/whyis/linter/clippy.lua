@@ -51,7 +51,6 @@ local function execute(bufnr, lnum)
 end
 
 return {
-	name = "clippy",
 	enabled = enabled,
 	execute = execute,
 }

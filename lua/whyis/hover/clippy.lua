@@ -25,7 +25,8 @@ end
 
 ---@return Hover.Provider
 return {
-	name = "whyis.clippy",
+	name = "whyis-clippy",
+	priority = 1000,
 	enabled = enabled,
-	exucute = execute,
+	execute = execute,
 }
