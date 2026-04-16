@@ -1,0 +1,62 @@
+---@param bufnr integer
+---@param lnum integer 1-indexed line number
+---@return boolean
+local function enabled(bufnr, lnum)
+	local diagnotics = vim.diagnostic.get(bufnr, { lnum = lnum - 1 })
+	for _, diag in ipairs(diagnotics) do
+		if diag.source == "ruff" then
+			return true
+		end
+	end
+	return false
+end
+
+---@param lint_code string
+---@param opts? {cwd?: string, timeout?: number}
+---@return string? stdout
+---@return string? err
+local function ruff_rule(lint_code, opts)
+	opts = opts or {}
+	local cmd = { "ruff", "rule", "--output-format", "text", lint_code }
+	local result = vim.system(cmd, {
+		text = true,
+		cwd = opts.cwd,
+	}):wait(opts.timeout)
+	if result.code ~= 0 then
+		local err = result.stderr ~= "" and result.stderr
+			or string.format("[whyis:ERROR] ruff rule failed with exit code %d", result.code)
+		return nil, err
+	end
+	return result.stdout, nil
+end
+
+---@param diagnostic vim.Diagnostic
+---@return string? lint_code
+local function extract_lintcode(diagnostic)
+	return diagnostic.user_data and diagnostic.user_data.lsp and diagnostic.user_data.lsp.code
+end
+
+---@param bufnr number
+---@param lnum number 1-indexed line number
+---@return string? explain
+local function execute(bufnr, lnum)
+	local diagnotics = vim.diagnostic.get(bufnr, { lnum = lnum - 1 })
+	for _, diag in ipairs(diagnotics) do
+		if diag.source == "ruff" then
+			local lint_code = extract_lintcode(diag)
+			if lint_code ~= nil then
+				local explain, err = ruff_rule(lint_code)
+				if err ~= nil then
+					vim.notify(err)
+				end
+				return explain
+			end
+		end
+	end
+	return nil
+end
+
+return {
+	enabled = enabled,
+	execute = execute,
+}
