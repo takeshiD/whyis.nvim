@@ -1,27 +1,28 @@
 # whyis.nvim
 
-A Neovim plugin that explains LSP diagnostics from linters — *What is bad?*
+A Neovim plugin that explains LSP diagnostics from linters — *Why is bad?*
 
 Supports displaying explanations via [hover.nvim](https://github.com/lewis6991/hover.nvim) or in a scratch buffer.
 
-## Requirements
+# Requirements
 
 - Neovim 0.10+
 - Your linter(s) of choice (clippy, ruff, ...)
 - [hover.nvim](https://github.com/lewis6991/hover.nvim) *(optional — required only for hover integration)*
 
-## Supported Linters
+# Supported Linters
 
-| Linter | Language | Command used |
-|--------|----------|--------------|
-| [clippy](https://github.com/rust-lang/rust-clippy) | Rust | `cargo clippy --explain clippy::<code>` |
-| [ruff](https://github.com/astral-sh/ruff) | Python | `ruff rule --output-format text <code>` |
+| Linter                                             | Language   | Command used                            |
+| --------                                           | ---------- | --------------                          |
+| [clippy](https://github.com/rust-lang/rust-clippy) | Rust       | `cargo clippy --explain clippy::<code>` |
+| [ruff](https://github.com/astral-sh/ruff)          | Python     | `ruff rule --output-format text <code>` |
 
-## Installation
 
-### lazy.nvim
+# Installation
 
-#### With hover.nvim
+## lazy.nvim
+
+### With hover.nvim
 
 ```lua
 {
@@ -46,7 +47,7 @@ Supports displaying explanations via [hover.nvim](https://github.com/lewis6991/h
 }
 ```
 
-#### Scratch buffer (without hover.nvim)
+### Scratch buffer (without hover.nvim)
 
 ```lua
 {
@@ -85,6 +86,6 @@ Supports displaying explanations via [hover.nvim](https://github.com/lewis6991/h
 }
 ```
 
-## License
+# License
 
 MIT
