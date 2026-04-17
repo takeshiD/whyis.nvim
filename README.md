@@ -24,6 +24,26 @@ Supports displaying explanations in a floating window or scratch buffer, via [ho
 
 ## lazy.nvim
 
+### Scratch buffer / Floating window (without hover.nvim)
+
+Via `Whyis` command, you can map 
+
+```lua
+{
+	"takeshid/whyis.nvim",
+    event = "VeryLazy",
+    keys = {
+        {"<leader>wf", "<cmd>Whyis float<cr>", desc = "Whyis floating window"},
+        {"<leader>wl", "<cmd>Whyis right<cr>", desc = "Whyis right side"},
+    }
+}
+```
+
+Inside the floating window press `q` or `<Esc>` to close it.
+
+> [!WARNING]
+> This plugin has no config yet.
+
 ### With hover.nvim
 
 ```lua
@@ -49,22 +69,6 @@ Supports displaying explanations in a floating window or scratch buffer, via [ho
 }
 ```
 
-### Scratch buffer / Floating window (without hover.nvim)
-
-`whyis.view` provides `open_scratch`, `open_float`, and a unified `open` function.
-
-```lua
-{
-	"takeshid/whyis.nvim",
-    event = "VeryLazy",
-    keys = {
-        {"<leader>wf", "<cmd>Whyis float<cr>", desc = "Whyis floating window"},
-        {"<leader>wl", "<cmd>Whyis right<cr>", desc = "Whyis right side"},
-    }
-}
-```
-
-Inside the floating window press `q` or `<Esc>` to close it.
 
 # License
 
