@@ -4,7 +4,13 @@ A Neovim plugin that explains LSP diagnostics from linters — *Why is bad?*
 
 Supports displaying explanations in a floating window or scratch buffer, via [hover.nvim](https://github.com/lewis6991/hover.nvim).
 
-<img src="assets/clippy_float.gif">
+- Example `clippy`
+
+<img src="assets/clippy.gif" width="600" />
+
+- Example `ruff`
+
+<img src="assets/ruff.gif" width="600" />
 
 # Requirements
 
@@ -26,11 +32,11 @@ Supports displaying explanations in a floating window or scratch buffer, via [ho
 
 ### Scratch buffer / Floating window (without hover.nvim)
 
-Via `Whyis` command, you can map 
+You can use `Whyis <win_opt>` command like following.
 
 ```lua
 {
-	"takeshid/whyis.nvim",
+    "takeshid/whyis.nvim",
     event = "VeryLazy",
     keys = {
         {"<leader>wf", "<cmd>Whyis float<cr>", desc = "Whyis floating window"},
@@ -45,6 +51,7 @@ Inside the floating window press `q` or `<Esc>` to close it.
 > This plugin has no config yet.
 
 ### With hover.nvim
+<img src="assets/clippy_hover.gif" width="800" />
 
 ```lua
 {
