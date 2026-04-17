@@ -34,7 +34,7 @@ end
 
 ---@return Hover.Provider
 return {
-	name = "WhyisBad",
+	name = "Whyis",
 	priority = 1000,
 	enabled = enabled,
 	execute = execute,

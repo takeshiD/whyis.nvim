@@ -24,8 +24,6 @@ local function execute(params, done)
 				lines[#lines + 1] = "-------"
 			end
 			is_first = false
-			local header = string.format("# %s(%s)", content.lint_code, content.source)
-			lines[#lines + 1] = header
 			lines[#lines + 1] = content.explain
 		end
 		done({ lines = lines, filetype = "markdown" })
@@ -34,7 +32,7 @@ end
 
 ---@return Hover.Provider
 return {
-	name = "WhyisBad",
+	name = "Whyis",
 	priority = 1000,
 	enabled = enabled,
 	execute = execute,

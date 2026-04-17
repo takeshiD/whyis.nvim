@@ -47,44 +47,22 @@ Supports displaying explanations via [hover.nvim](https://github.com/lewis6991/h
 }
 ```
 
-### Scratch buffer (without hover.nvim)
+### Scratch buffer / Floating window (without hover.nvim)
+
+`whyis.view` provides `open_scratch`, `open_float`, and a unified `open` function.
 
 ```lua
 {
 	"takeshid/whyis.nvim",
-	config = function()
-		vim.keymap.set("n", "<leader>wk", function()
-			local bufnr = vim.api.nvim_get_current_buf()
-			local lnum = vim.api.nvim_win_get_cursor(0)[1]
-
-			-- choose the linter module that fits the current buffer
-			local ft = vim.bo[bufnr].filetype
-			local linter
-			if ft == "rust" then
-				linter = require("whyis.linter.clippy")
-			elseif ft == "python" then
-				linter = require("whyis.linter.ruff")
-			end
-
-			if not linter or not linter.enabled(bufnr, lnum) then
-				return
-			end
-
-			local explain = linter.execute(bufnr, lnum)
-			if not explain then
-				return
-			end
-
-			-- open a scratch buffer
-			local sbuf = vim.api.nvim_create_buf(false, true)
-			vim.bo[sbuf].filetype = "markdown"
-			vim.api.nvim_buf_set_lines(sbuf, 0, -1, false, vim.split(explain, "\n"))
-			vim.cmd("split")
-			vim.api.nvim_win_set_buf(0, sbuf)
-		end, { desc = "whyis: explain diagnostic" })
-	end,
+    event = "VeryLazy",
+    keys = {
+        {"<leader>wf", "<cmd>Whyis float", desc = "Whyis floating window"},
+        {"<leader>wl", "<cmd>Whyis right", desc = "Whyis right side"},
+    }
 }
 ```
+
+Inside the floating window press `q` or `<Esc>` to close it.
 
 # License
 
