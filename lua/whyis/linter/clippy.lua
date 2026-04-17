@@ -37,9 +37,11 @@ end
 
 ---@param bufnr number
 ---@param lnum number
----@return string? explain
+---@return table<LinterRule, WhyisContent>
 local function execute(bufnr, lnum)
 	local diagnotics = vim.diagnostic.get(bufnr, { lnum = lnum - 1 })
+	---@type table<LinterRule, WhyisContent>
+	local contents = {}
 	for _, diag in ipairs(diagnotics) do
 		if diag.source == "clippy" then
 			local lint_code = extract_lintcode(diag)
@@ -48,11 +50,16 @@ local function execute(bufnr, lnum)
 				if err ~= nil then
 					vim.notify(err)
 				end
-				return explain
+				local whyis_content = {
+					source = diag.source,
+					lint_code = diag.code,
+					explain = explain,
+				}
+				contents[diag.code] = whyis_content
 			end
 		end
 	end
-	return nil
+	return contents
 end
 
 return {

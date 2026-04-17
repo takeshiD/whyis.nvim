@@ -4,7 +4,7 @@
 local function enabled(bufnr, lnum)
 	local diagnotics = vim.diagnostic.get(bufnr, { lnum = lnum - 1 })
 	for _, diag in ipairs(diagnotics) do
-		if diag.source == "ruff" then
+		if diag.source == "Ruff" then
 			return true
 		end
 	end
@@ -38,22 +38,29 @@ end
 
 ---@param bufnr number
 ---@param lnum number 1-indexed line number
----@return string? explain
+---@return table<LinterRule, WhyisContent>
 local function execute(bufnr, lnum)
 	local diagnotics = vim.diagnostic.get(bufnr, { lnum = lnum - 1 })
+	---@type table<LinterRule, WhyisContent>
+	local contents = {}
 	for _, diag in ipairs(diagnotics) do
-		if diag.source == "ruff" then
+		if diag.source == "Ruff" then
 			local lint_code = extract_lintcode(diag)
 			if lint_code ~= nil then
 				local explain, err = ruff_rule(lint_code)
 				if err ~= nil then
 					vim.notify(err)
 				end
-				return explain
+				local whyis_content = {
+					source = diag.source,
+					lint_code = diag.code,
+					explain = explain,
+				}
+				contents[diag.code] = whyis_content
 			end
 		end
 	end
-	return nil
+	return contents
 end
 
 return {

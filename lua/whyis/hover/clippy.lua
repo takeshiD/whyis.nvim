@@ -15,22 +15,26 @@ local function execute(params, done)
 	async.run(function()
 		local bufnr = params.bufnr
 		local lnum = params.pos[1]
-		local explain = clippy.execute(bufnr, lnum)
-		if explain ~= nil then
-			local lines = {}
-			for _, line in ipairs(vim.split(explain, "\n")) do
-				lines[#lines + 1] = line
+		---@type table<LinterRule, WhyisContent>
+		local contents = clippy.execute(bufnr, lnum)
+		local is_first = true
+		local lines = {}
+		for _, content in pairs(contents) do
+			if not is_first then
+				lines[#lines + 1] = "-------"
 			end
-			done({ lines = lines, filetype = "markdown" })
-		else
-			done({ lines = {}, filetype = "markdown" })
+			is_first = false
+			local header = string.format("# %s(%s)", content.lint_code, content.source)
+			lines[#lines + 1] = header
+			lines[#lines + 1] = content.explain
 		end
+		done({ lines = lines, filetype = "markdown" })
 	end)
 end
 
 ---@return Hover.Provider
 return {
-	name = "Whyis",
+	name = "WhyisBad",
 	priority = 1000,
 	enabled = enabled,
 	execute = execute,
