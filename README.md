@@ -23,6 +23,7 @@ Supports displaying explanations in a floating window or scratch buffer, via [ho
 | Linter                                             | Language   | Command used                            |
 | --------                                           | ---------- | --------------                          |
 | [clippy](https://github.com/rust-lang/rust-clippy) | Rust       | `cargo clippy --explain clippy::<code>` |
+| [bacon-ls](https://github.com/crisidev/bacon-ls) | Rust       | `cargo clippy --explain clippy::<code>` |
 | [ruff](https://github.com/astral-sh/ruff)          | Python     | `ruff rule --output-format text <code>` |
 
 
