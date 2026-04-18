@@ -1,14 +1,10 @@
+local utils = require("whyis.utils")
+
 ---@param bufnr integer
 ---@param lnum integer 1-indexed line number
 ---@return boolean
 local function enabled(bufnr, lnum)
-	local diagnotics = vim.diagnostic.get(bufnr, { lnum = lnum - 1 })
-	for _, diag in ipairs(diagnotics) do
-		if diag.source == "Ruff" then
-			return true
-		end
-	end
-	return false
+    return utils.is_python(bufnr) and utils.contain_diagnostic(bufnr, lnum, "Ruff")
 end
 
 ---@param lint_code string

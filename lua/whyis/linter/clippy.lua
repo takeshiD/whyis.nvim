@@ -1,4 +1,4 @@
-local utils = require("lua.whyis.utils")
+local utils = require("whyis.utils")
 
 ---@param bufnr integer
 ---@param lnum  integer
