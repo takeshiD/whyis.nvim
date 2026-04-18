@@ -21,11 +21,11 @@ Supports displaying explanations in a floating window or scratch buffer, via [ho
 
 # Supported Linters
 
-| Linter                                             | Language   | Command used                            |
-| --------                                           | ---------- | --------------                          |
-| [clippy](https://github.com/rust-lang/rust-clippy) | Rust       | `cargo clippy --explain clippy::<code>` |
-| [bacon-ls](https://github.com/crisidev/bacon-ls) | Rust       | `cargo clippy --explain clippy::<code>` |
-| [ruff](https://github.com/astral-sh/ruff)          | Python     | `ruff rule --output-format text <code>` |
+| Linter                                             | Language   |
+| --------                                           | ---------- |
+| [clippy](https://github.com/rust-lang/rust-clippy) | Rust       |
+| [bacon-ls](https://github.com/crisidev/bacon-ls)   | Rust       |
+| [ruff](https://github.com/astral-sh/ruff)          | Python     |
 
 
 # Installation
@@ -38,12 +38,12 @@ You can use `Whyis <win_opt>` command like following.
 
 ```lua
 {
-    "takeshid/whyis.nvim",
-    event = "VeryLazy",
-    keys = {
-        {"<leader>wf", "<cmd>Whyis float<cr>", desc = "Whyis floating window"},
-        {"<leader>wl", "<cmd>Whyis right<cr>", desc = "Whyis right side"},
-    }
+  "takeshid/whyis.nvim",
+  event = "VeryLazy",
+  keys = {
+    {"<leader>wf", "<cmd>Whyis float<cr>", desc = "Whyis floating window"},
+    {"<leader>wl", "<cmd>Whyis right<cr>", desc = "Whyis right side"},
+  }
 }
 ```
 
@@ -57,23 +57,23 @@ Inside the floating window press `q` or `<Esc>` to close it.
 
 ```lua
 {
-	"lewis6991/hover.nvim",
-	dependencies = {
-		"takeshid/whyis.nvim",
-	},
-	config = function()
-		vim.keymap.set("n", "K", require("hover").hover, { desc = "hover.nvim" })
-		require("hover").config({
-			providers = {
-				"hover.providers.diagnostic",
-				"hover.providers.lsp",
-				"whyis.hover",  -- add your configration
-			},
-			preview_opts = { border = "single" },
-			preview_window = true,
-			title = true,
-		})
-	end,
+  "lewis6991/hover.nvim",
+  dependencies = {
+    "takeshid/whyis.nvim",
+  },
+  config = function()
+    vim.keymap.set("n", "K", require("hover").hover, { desc = "hover.nvim" })
+    require("hover").config({
+      providers = {
+        "hover.providers.diagnostic",
+        "hover.providers.lsp",
+        "whyis.hover",  -- add your configration
+      },
+      preview_opts = { border = "single" },
+      preview_window = true,
+      title = true,
+    })
+  end,
 }
 ```
 

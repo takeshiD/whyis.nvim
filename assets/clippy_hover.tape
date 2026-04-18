@@ -12,7 +12,8 @@ Set Padding 0
 Type "nvim whyis_clippy/src/main.rs"
 Sleep 1s
 Enter
-Sleep 1s
+Type "2gg"
+Sleep 2s
 Type "U"
 Sleep 1s
 Type "gu"
