@@ -26,13 +26,16 @@ local function execute(params, done)
 			is_first = false
 			lines[#lines + 1] = content.explain
 		end
+		if #lines == 0 then
+			lines = { "no result" }
+		end
 		done({ lines = lines, filetype = "markdown" })
 	end)
 end
 
 ---@return Hover.Provider
 return {
-	name = "Whyis",
+	name = "ruff",
 	priority = 1000,
 	enabled = enabled,
 	execute = execute,

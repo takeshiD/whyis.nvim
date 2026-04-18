@@ -17,6 +17,7 @@ Supports displaying explanations in a floating window or scratch buffer, via [ho
 - Neovim 0.10+
 - Your linter(s) of choice (clippy, ruff, ...)
 - [hover.nvim](https://github.com/lewis6991/hover.nvim) *(optional — required only for hover integration)*
+- [render-markdown.nvim](https://github.com/MeanderingProgrammer/render-markdown.nvim) *(optional)*
 
 # Supported Linters
 
@@ -66,8 +67,7 @@ Inside the floating window press `q` or `<Esc>` to close it.
 			providers = {
 				"hover.providers.diagnostic",
 				"hover.providers.lsp",
-				"whyis.hover.clippy", -- Rust / clippy
-				"whyis.hover.ruff",   -- Python / ruff
+				"whyis.hover",  -- add your configration
 			},
 			preview_opts = { border = "single" },
 			preview_window = true,

@@ -1,8 +1,10 @@
+local utils = require("lua.whyis.utils")
+
 ---@param bufnr integer
+---@param lnum  integer
 ---@return boolean
-local function enabled(bufnr)
-	local ft = vim.bo[bufnr].filetype
-	return ft == "rust"
+local function enabled(bufnr, lnum)
+	return utils.is_rust(bufnr) and utils.contain_diagnostic(bufnr, lnum, "clippy")
 end
 
 ---@param lint_code string
