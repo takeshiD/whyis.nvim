@@ -12,6 +12,8 @@ local function get_linter(bufnr)
 		return require("whyis.linter.clippy")
 	elseif ft == "python" then
 		return require("whyis.linter.ruff")
+	elseif ft == "typescript" or ft == "javascript" then
+		return require("whyis.linter.biome")
 	end
 	return nil
 end
