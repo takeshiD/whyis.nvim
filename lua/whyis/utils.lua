@@ -12,6 +12,13 @@ function M.is_python(bufnr)
 end
 
 ---@param bufnr integer
+---@return boolean
+function M.is_ts(bufnr)
+	local ft = vim.bo[bufnr].filetype
+	return ft == "typescript" or ft == "javascript"
+end
+
+---@param bufnr integer
 ---@param lnum integer
 ---@param lsp_name string
 ---@return boolean

@@ -5,15 +5,20 @@ local M = {}
 ---@field execute fun(bufnr: integer, lnum: integer): table<LinterRule, WhyisContent>
 
 ---@param bufnr integer
----@return WhyisLinter?
-local function get_linter(bufnr)
+---@return WhyisLinter[]
+local function get_linters(bufnr)
 	local ft = vim.bo[bufnr].filetype
 	if ft == "rust" then
-		return require("whyis.linter.clippy")
+		return {
+			require("whyis.linter.clippy"),
+			require("whyis.linter.bacon_ls"),
+		}
 	elseif ft == "python" then
-		return require("whyis.linter.ruff")
+		return { require("whyis.linter.ruff") }
+	elseif ft == "typescript" or ft == "javascript" then
+		return { require("whyis.linter.biome") }
 	end
-	return nil
+	return {}
 end
 
 ---@param contents table<LinterRule, WhyisContent>
@@ -38,21 +43,44 @@ end
 ---@param lnum integer
 ---@return string[]?
 local function collect_lines(bufnr, lnum)
-	local linter = get_linter(bufnr)
-	if not linter then
+	local linters = get_linters(bufnr)
+	if #linters == 0 then
 		vim.notify("[whyis] unsupported filetype: " .. vim.bo[bufnr].filetype, vim.log.levels.WARN)
 		return nil
 	end
-	if not linter.enabled(bufnr, lnum) then
+
+	local any_enabled = false
+	for _, linter in ipairs(linters) do
+		if linter.enabled(bufnr, lnum) then
+			any_enabled = true
+			break
+		end
+	end
+	if not any_enabled then
 		vim.notify("[whyis] linter not available for this buffer", vim.log.levels.WARN)
 		return nil
 	end
-	local contents = linter.execute(bufnr, lnum)
-	if vim.tbl_isempty(contents) then
+
+	local all_lines = {}
+	for _, linter in ipairs(linters) do
+		if linter.enabled(bufnr, lnum) then
+			local contents = linter.execute(bufnr, lnum)
+			if not vim.tbl_isempty(contents) then
+				if #all_lines > 0 then
+					all_lines[#all_lines + 1] = "---"
+				end
+				for _, line in ipairs(contents_to_lines(contents)) do
+					all_lines[#all_lines + 1] = line
+				end
+			end
+		end
+	end
+
+	if #all_lines == 0 then
 		vim.notify("[whyis] no explains at cursor", vim.log.levels.INFO)
 		return nil
 	end
-	return contents_to_lines(contents)
+	return all_lines
 end
 
 ---@param lines string[]

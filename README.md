@@ -26,6 +26,7 @@ Supports displaying explanations in a floating window or scratch buffer, via [ho
 | [clippy](https://github.com/rust-lang/rust-clippy) | Rust       |
 | [bacon-ls](https://github.com/crisidev/bacon-ls)   | Rust       |
 | [ruff](https://github.com/astral-sh/ruff)          | Python     |
+| [biome](https://github.com/biomejs/biome)          | Typescript |
 
 
 # Installation
