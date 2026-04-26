@@ -16,7 +16,10 @@ local function get_linters(bufnr)
 	elseif ft == "python" then
 		return { require("whyis.linter.ruff") }
 	elseif ft == "typescript" or ft == "javascript" then
-		return { require("whyis.linter.biome") }
+		return {
+            require("whyis.linter.biome"),
+            require("whyis.linter.denols"),
+        }
 	end
 	return {}
 end
