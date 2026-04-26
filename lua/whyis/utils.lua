@@ -32,4 +32,11 @@ function M.contain_diagnostic(bufnr, lnum, lsp_name)
 	return false
 end
 
+---@param bufnr integer
+---@return boolean
+function M.is_deno(bufnr)
+	local clients = vim.lsp.get_clients({ bufnr = bufnr, name = "denols" })
+	return #clients > 0
+end
+
 return M

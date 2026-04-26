@@ -7,5 +7,6 @@ return {
 		require("whyis.hover.clippy"),
 		require("whyis.hover.bacon_ls"),
 		require("whyis.hover.biome"),
+		require("whyis.hover.denols"),
 	},
 }
