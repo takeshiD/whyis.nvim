@@ -35,4 +35,30 @@ function M.fetch(url, timeout_ms)
 	return result.stdout, nil
 end
 
+---@param url string
+---@param callback fun(content: string?, err: string?)
+function M.fetch_async(url, callback)
+	if vim.net ~= nil then
+		vim.net.request(url, {}, function(e, r)
+			if e then
+				callback(nil, e)
+			else
+				callback(r.body, nil)
+			end
+		end)
+		return
+	end
+	if vim.fn.executable("curl") == 0 then
+		callback(nil, "curl is not found in your PATH")
+		return
+	end
+	vim.system({ "curl", "-s", "--fail", "-L", url }, { text = true }, function(result)
+		if result.code ~= 0 then
+			callback(nil, "internet connection failed")
+		else
+			callback(result.stdout, nil)
+		end
+	end)
+end
+
 return M

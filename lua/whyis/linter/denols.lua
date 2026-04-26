@@ -56,7 +56,30 @@ local function execute(bufnr, lnum)
 	return contents
 end
 
+---@param bufnr integer
+local function prefetch(bufnr)
+	local diagnostics = vim.diagnostic.get(bufnr)
+	local seen = {}
+	for _, diag in ipairs(diagnostics) do
+		if diag.source == "deno-lint" and diag.code and not seen[diag.code] then
+			seen[diag.code] = true
+			local lint_code = tostring(diag.code)
+			if not cache.get(CACHE_NS, lint_code, CACHE_TTL) then
+				local url = string.format(BASE_URL, lint_code)
+				http.fetch_async(url, function(content, _err)
+					if content then
+						vim.schedule(function()
+							cache.set(CACHE_NS, lint_code, content)
+						end)
+					end
+				end)
+			end
+		end
+	end
+end
+
 return {
 	enabled = enabled,
 	execute = execute,
+	prefetch = prefetch,
 }
